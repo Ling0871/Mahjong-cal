@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>麻將</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #d32f2f;
+        }
+        .calculator {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .player {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .player h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .score-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+            min-width: 60px;
+        }
+        .add-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+        .add-btn:hover {
+            background-color: #3d8b40;
+        }
+        .subtract-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        .subtract-btn:hover {
+            background-color: #d32f2f;
+        }
+        .total {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #d32f2f;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .reset-btn {
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 20px;
+        }
+        .reset-btn:hover {
+            background-color: #e68a00;
+        }
+    </style>
+</head>
+<body>
+    <h1>麻將</h1>
+    
+    <div class="calculator">
+        <div class="player">
+            <h3>東</h3>
+            <div class="score-buttons">
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('東', 0.5, true)">+0.5</button>
+                    <button class="subtract-btn" onclick="updateScore('東', 0.5, false)">-0.5</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('東', 1, true)">+1</button>
+                    <button class="subtract-btn" onclick="updateScore('東', 1, false)">-1</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('東', 5, true)">+5</button>
+                    <button class="subtract-btn" onclick="updateScore('東', 5, false)">-5</button>
+                </div>
+            </div>
+            <div class="total" id="東-total">0</div>
+        </div>
+        
+        <div class="player">
+            <h3>南</h3>
+            <div class="score-buttons">
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('南', 0.5, true)">+0.5</button>
+                    <button class="subtract-btn" onclick="updateScore('南', 0.5, false)">-0.5</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('南', 1, true)">+1</button>
+                    <button class="subtract-btn" onclick="updateScore('南', 1, false)">-1</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('南', 5, true)">+5</button>
+                    <button class="subtract-btn" onclick="updateScore('南', 5, false)">-5</button>
+                </div>
+            </div>
+            <div class="total" id="南-total">0</div>
+        </div>
+        
+        <div class="player">
+            <h3>西</h3>
+            <div class="score-buttons">
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('西', 0.5, true)">+0.5</button>
+                    <button class="subtract-btn" onclick="updateScore('西', 0.5, false)">-0.5</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('西', 1, true)">+1</button>
+                    <button class="subtract-btn" onclick="updateScore('西', 1, false)">-1</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('西', 5, true)">+5</button>
+                    <button class="subtract-btn" onclick="updateScore('西', 5, false)">-5</button>
+                </div>
+            </div>
+            <div class="total" id="西-total">0</div>
+        </div>
+        
+        <div class="player">
+            <h3>北</h3>
+            <div class="score-buttons">
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('北', 0.5, true)">+0.5</button>
+                    <button class="subtract-btn" onclick="updateScore('北', 0.5, false)">-0.5</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('北', 1, true)">+1</button>
+                    <button class="subtract-btn" onclick="updateScore('北', 1, false)">-1</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('北', 5, true)">+5</button>
+                    <button class="subtract-btn" onclick="updateScore('北', 5, false)">-5</button>
+                </div>
+            </div>
+            <div class="total" id="北-total">0</div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="reset-btn" onclick="resetAll()">Reset</button>
+    </div>
+
+    <script>
+        // 初始化玩家分數
+        let playerScores = {
+            '東': 0,
+            '南': 0,
+            '西': 0,
+            '北': 0
+        };
+        
+        // 從本地存儲加載分數
+        function loadScores() {
+            const savedScores = localStorage.getItem('mahjongScores');
+            if (savedScores) {
+                playerScores = JSON.parse(savedScores);
+                updateDisplay();
+            }
+        }
+        
+        // 保存分數到本地存儲
+        function saveScores() {
+            localStorage.setItem('mahjongScores', JSON.stringify(playerScores));
+        }
+        
+        // 更新顯示
+        function updateDisplay() {
+            for (const player in playerScores) {
+                document.getElementById(`${player}-total`).textContent = formatNumber(playerScores[player]);
+            }
+        }
+        
+        // 格式化數字顯示 (保留小數點後一位)
+        function formatNumber(num) {
+            // 處理浮點數精度問題
+            const rounded = Math.round(num * 10) / 10;
+            return rounded.toFixed(1);
+        }
+        
+        // 更新分數
+        function updateScore(player, amount, isAdd) {
+            // 確保使用數字類型計算
+            amount = parseFloat(amount);
+            
+            if (isAdd) {
+                playerScores[player] += amount;
+            } else {
+                playerScores[player] -= amount;
+            }
+            
+            // 更新顯示和保存
+            updateDisplay();
+            saveScores();
+        }
+        
+        // 重置所有分數
+        function resetAll() {
+            if (confirm('SURE ?')) {
+                playerScores = {
+                    '東': 0,
+                    '南': 0,
+                    '西': 0,
+                    '北': 0
+                };
+                updateDisplay();
+                saveScores();
+            }
+        }
+        
+        // 頁面加載時讀取分數
+        window.onload = function() {
+            loadScores();
+        };
+    </script>
+</body>
+</html>
