@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>麻將</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #d32f2f;
+        }
+        .calculator {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .player {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+        }
+        .player h3 {
+            margin-top: 0;
+            color: #333;
+            cursor: pointer;
+        }
+        .player-name-edit {
+            display: none;
+            margin-bottom: 10px;
+        }
+        .score-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+            min-width: 60px;
+        }
+        .add-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+        .add-btn:hover {
+            background-color: #3d8b40;
+        }
+        .subtract-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        .subtract-btn:hover {
+            background-color: #d32f2f;
+        }
+        .total {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #d32f2f;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .reset-btn {
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 20px;
+        }
+        .reset-btn:hover {
+            background-color: #e68a00;
+        }
+        .settings-btn {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 20px;
+        }
+        .settings-btn:hover {
+            background-color: #0b7dda;
+        }
+        .settings-panel {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .settings-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .settings-row label {
+            width: 100px;
+            margin-right: 10px;
+        }
+        .settings-row input {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .save-settings-btn {
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 15px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>麻將</h1>
+    
+    <div class="calculator">
+        <div class="player" id="player-1">
+            <h3 onclick="editPlayerName('player-1')">東</h3>
+            <div class="player-name-edit">
+                <input type="text" class="name-input" placeholder="輸入玩家名稱">
+                <button onclick="savePlayerName('player-1')">save</button>
+            </div>
+            <div class="score-buttons">
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-1', 0.5, true)">+0.5</button>
+                    <button class="subtract-btn" onclick="updateScore('player-1', 0.5, false)">-0.5</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-1', 1, true)">+1</button>
+                    <button class="subtract-btn" onclick="updateScore('player-1', 1, false)">-1</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-1', 5, true)">+5</button>
+                    <button class="subtract-btn" onclick="updateScore('player-1', 5, false)">-5</button>
+                </div>
+            </div>
+            <div class="total" id="player-1-total">0</div>
+        </div>
+        
+        <div class="player" id="player-2">
+            <h3 onclick="editPlayerName('player-2')">南</h3>
+            <div class="player-name-edit">
+                <input type="text" class="name-input" placeholder="輸入玩家名稱">
+                <button onclick="savePlayerName('player-2')">save</button>
+            </div>
+            <div class="score-buttons">
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-2', 0.5, true)">+0.5</button>
+                    <button class="subtract-btn" onclick="updateScore('player-2', 0.5, false)">-0.5</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-2', 1, true)">+1</button>
+                    <button class="subtract-btn" onclick="updateScore('player-2', 1, false)">-1</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-2', 5, true)">+5</button>
+                    <button class="subtract-btn" onclick="updateScore('player-2', 5, false)">-5</button>
+                </div>
+            </div>
+            <div class="total" id="player-2-total">0</div>
+        </div>
+        
+        <div class="player" id="player-3">
+            <h3 onclick="editPlayerName('player-3')">西</h3>
+            <div class="player-name-edit">
+                <input type="text" class="name-input" placeholder="輸入玩家名稱">
+                <button onclick="savePlayerName('player-3')">save</button>
+            </div>
+            <div class="score-buttons">
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-3', 0.5, true)">+0.5</button>
+                    <button class="subtract-btn" onclick="updateScore('player-3', 0.5, false)">-0.5</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-3', 1, true)">+1</button>
+                    <button class="subtract-btn" onclick="updateScore('player-3', 1, false)">-1</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-3', 5, true)">+5</button>
+                    <button class="subtract-btn" onclick="updateScore('player-3', 5, false)">-5</button>
+                </div>
+            </div>
+            <div class="total" id="player-3-total">0</div>
+        </div>
+        
+        <div class="player" id="player-4">
+            <h3 onclick="editPlayerName('player-4')">北</h3>
+            <div class="player-name-edit">
+                <input type="text" class="name-input" placeholder="輸入玩家名稱">
+                <button onclick="savePlayerName('player-4')">save</button>
+            </div>
+            <div class="score-buttons">
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-4', 0.5, true)">+0.5</button>
+                    <button class="subtract-btn" onclick="updateScore('player-4', 0.5, false)">-0.5</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-4', 1, true)">+1</button>
+                    <button class="subtract-btn" onclick="updateScore('player-4', 1, false)">-1</button>
+                </div>
+                <div class="button-row">
+                    <button class="add-btn" onclick="updateScore('player-4', 5, true)">+5</button>
+                    <button class="subtract-btn" onclick="updateScore('player-4', 5, false)">-5</button>
+                </div>
+            </div>
+            <div class="total" id="player-4-total">0</div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="reset-btn" onclick="resetAll()">Reset</button>
+        <button class="settings-btn" onclick="toggleSettings()">Settings</button>
+    </div>
+
+    <div class="settings-panel" id="settings-panel">
+        <h3>ADJUST VALUE</h3>
+        <div class="settings-row">
+            <label>1:</label>
+            <input type="number" step="0.1" id="btn1-value" value="0.5">
+        </div>
+        <div class="settings-row">
+            <label>2:</label>
+            <input type="number" step="0.1" id="btn2-value" value="1">
+        </div>
+        <div class="settings-row">
+            <label>3:</label>
+            <input type="number" step="0.1" id="btn3-value" value="5">
+        </div>
+        <button class="save-settings-btn" onclick="saveButtonValues()">Save Settings</button>
+    </div>
+
+    <script>
+        // 初始化玩家分數
+        let playerScores = {
+            'player-1': 0,
+            'player-2': 0,
+            'player-3': 0,
+            'player-4': 0
+        };
+        
+        // 按鈕值設定
+        let buttonValues = [0.5, 1, 5];
+        
+        // 從本地存儲加載分數和設定
+        function loadData() {
+            const savedScores = localStorage.getItem('mahjongScores');
+            if (savedScores) {
+                playerScores = JSON.parse(savedScores);
+                updateDisplay();
+            }
+            
+            const savedNames = localStorage.getItem('mahjongPlayerNames');
+            if (savedNames) {
+                const names = JSON.parse(savedNames);
+                for (let i = 1; i <= 4; i++) {
+                    const playerId = `player-${i}`;
+                    if (names[playerId]) {
+                        document.querySelector(`#${playerId} h3`).textContent = names[playerId];
+                    }
+                }
+            }
+            
+            const savedButtonValues = localStorage.getItem('mahjongButtonValues');
+            if (savedButtonValues) {
+                buttonValues = JSON.parse(savedButtonValues);
+                document.getElementById('btn1-value').value = buttonValues[0];
+                document.getElementById('btn2-value').value = buttonValues[1];
+                document.getElementById('btn3-value').value = buttonValues[2];
+            }
+        }
+        
+        // 保存分數和設定到本地存儲
+        function saveData() {
+            localStorage.setItem('mahjongScores', JSON.stringify(playerScores));
+            
+            const playerNames = {};
+            for (let i = 1; i <= 4; i++) {
+                const playerId = `player-${i}`;
+                playerNames[playerId] = document.querySelector(`#${playerId} h3`).textContent;
+            }
+            localStorage.setItem('mahjongPlayerNames', JSON.stringify(playerNames));
+            
+            localStorage.setItem('mahjongButtonValues', JSON.stringify(buttonValues));
+        }
+        
+        // 更新顯示
+        function updateDisplay() {
+            for (const player in playerScores) {
+                document.getElementById(`${player}-total`).textContent = formatNumber(playerScores[player]);
+            }
+        }
+        
+        // 格式化數字顯示 (保留小數點後一位)
+        function formatNumber(num) {
+            // 處理浮點數精度問題
+            const rounded = Math.round(num * 10) / 10;
+            return rounded.toFixed(1);
+        }
+        
+        // 更新分數
+        function updateScore(playerId, amount, isAdd) {
+            // 確保使用數字類型計算
+            amount = parseFloat(amount);
+            
+            if (isAdd) {
+                playerScores[playerId] += amount;
+            } else {
+                playerScores[playerId] -= amount;
+            }
+            
+            // 更新顯示和保存
+            updateDisplay();
+            saveData();
+        }
+        
+        // 編輯玩家名稱
+        function editPlayerName(playerId) {
+            const playerDiv = document.getElementById(playerId);
+            const nameDisplay = playerDiv.querySelector('h3');
+            const nameEdit = playerDiv.querySelector('.player-name-edit');
+            const nameInput = playerDiv.querySelector('.name-input');
+            
+            nameDisplay.style.display = 'none';
+            nameEdit.style.display = 'block';
+            nameInput.value = nameDisplay.textContent;
+            nameInput.focus();
+        }
+        
+        // 保存玩家名稱
+        function savePlayerName(playerId) {
+            const playerDiv = document.getElementById(playerId);
+            const nameDisplay = playerDiv.querySelector('h3');
+            const nameEdit = playerDiv.querySelector('.player-name-edit');
+            const nameInput = playerDiv.querySelector('.name-input');
+            
+            const newName = nameInput.value.trim() || nameDisplay.textContent;
+            nameDisplay.textContent = newName;
+            nameDisplay.style.display = 'block';
+            nameEdit.style.display = 'none';
+            
+            saveData();
+        }
+        
+        // 切換設定面板
+        function toggleSettings() {
+            const settingsPanel = document.getElementById('settings-panel');
+            settingsPanel.style.display = settingsPanel.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        // 保存按鈕值設定
+        function saveButtonValues() {
+            buttonValues = [
+                parseFloat(document.getElementById('btn1-value').value) || 0.5,
+                parseFloat(document.getElementById('btn2-value').value) || 1,
+                parseFloat(document.getElementById('btn3-value').value) || 5
+            ];
+            
+            // 更新所有按鈕
+            for (let i = 1; i <= 4; i++) {
+                const playerId = `player-${i}`;
+                const buttons = document.querySelectorAll(`#${playerId} .button-row button`);
+                
+                buttons[0].textContent = `+${buttonValues[0]}`;
+                buttons[0].setAttribute('onclick', `updateScore('${playerId}', ${buttonValues[0]}, true)`);
+                buttons[1].textContent = `-${buttonValues[0]}`;
+                buttons[1].setAttribute('onclick', `updateScore('${playerId}', ${buttonValues[0]}, false)`);
+                
+                buttons[2].textContent = `+${buttonValues[1]}`;
+                buttons[2].setAttribute('onclick', `updateScore('${playerId}', ${buttonValues[1]}, true)`);
+                buttons[3].textContent = `-${buttonValues[1]}`;
+                buttons[3].setAttribute('onclick', `updateScore('${playerId}', ${buttonValues[1]}, false)`);
+                
+                buttons[4].textContent = `+${buttonValues[2]}`;
+                buttons[4].setAttribute('onclick', `updateScore('${playerId}', ${buttonValues[2]}, true)`);
+                buttons[5].textContent = `-${buttonValues[2]}`;
+                buttons[5].setAttribute('onclick', `updateScore('${playerId}', ${buttonValues[2]}, false)`);
+            }
+            
+            saveData();
+            toggleSettings();
+        }
+        
+        // 重置所有分數
+        function resetAll() {
+            if (confirm('SURE?')) {
+                for (const player in playerScores) {
+                    playerScores[player] = 0;
+                }
+                updateDisplay();
+                saveData();
+            }
+        }
+        
+        // 頁面加載時讀取數據
+        window.onload = function() {
+            loadData();
+        };
+    </script>
+</body>
+</html>
